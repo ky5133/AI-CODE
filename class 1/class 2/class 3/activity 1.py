@@ -21,22 +21,30 @@ def reccomend():
     preference = input(Fore.GREEN+"You: ")
     preference = normalise_input(preference)
     if preference in destinations:
-        suggestion=random.choice(destinations[preference])
-        print(Fore.LIGHTBLUE_EX+f"Travelbot: How about {suggestion}!")
-        print(Fore.CYAN+"Do you like it? (yes/no)")
-        response = input(Fore.YELLOW+"You: ")
-        response = normalise_input(response)
-        if response == "yes":
-            print(Fore.LIGHTMAGENTA_EX+"Travelbot: Great! Have a wonderful trip!")
-        if response == "no":
-            print(Fore.LIGHTRED_EX+"Travelbot: No worries! Let's try again.")
-            reccomend()
-        else:
-            print(Fore.LIGHTRED_EX+"Travelbot: I will suggest you again.")
-            reccomend()
-    else:
-        print(Fore.LIGHTRED_EX+"Travelbot: I don't have recommendations for that.")
-        reccomend()
+     while True:
+
+      suggestion = random.choice(destinations)
+
+      print(Fore.LIGHTBLUE_EX + f"Travelbot: How about {suggestion}?")
+
+      response = normalise_input(input(Fore.YELLOW + "You (yes/no): "))
+
+      if response == "yes":
+
+       print(Fore.LIGHTMAGENTA_EX + "Travelbot: Great! Have a wonderful trip!")
+
+       break
+
+      elif response == "no":
+
+       print(Fore.LIGHTRED_EX + "Travelbot: Let me suggest another destination.")
+
+      else:
+
+       print(Fore.LIGHTRED_EX + "Please answer with yes or no.")
+           
+    
+    
     show_help()
 
 
@@ -75,9 +83,7 @@ def main():
         if choice == "1.Recommend a travel destination" or choice == "1":
             reccomend()
         elif choice == "2. Give packing tips" or choice == "2":
-            packing_tips()
-            print(Fore.MAGENTA+"Have a safe trip")
-            break
+           packing_tips()
         elif choice == "3. Tell a joke" or choice == "3":
             tell_joke()
         elif choice == "4. Exit" or choice == "4":
