@@ -14,12 +14,12 @@ model.compile(
     loss='sparse_categorical_crossentropy',
     metrics=['accuracy']
 )
-model.fit(x_train,y_train, epochs=10)
+model.fit(x_train,y_train, epochs=5)
 
 test_loss, test_acc = model.evaluate(x_test, y_test, verbose=2)
 print(f'\nTest accuracy: {test_acc}')
 predictions = model.predict(x_test)
-
+print(x_test)
 plt.imshow(x_test[5], cmap=plt.cm.binary)
 plt.title(f'Predicted:{predictions[5].argmax()}')
 plt.show()
