@@ -32,19 +32,18 @@ def recommend(genre=None, mood=None, rating=None, n=5):
     return out if out else "No suitable movie recommendations found."
 
 def get_genre():
-     print(Fore.GREEN + "Available Genres: ", end="") 
-     for i, g in enumerate(genres, 1): 
+    print(Fore.GREEN + "Available Genres: ", end="") 
+    for i, g in enumerate(genres, 1): 
         print(f"{Fore.CYAN}{i}. {g}") 
         print() 
-        while True:
-            x = input(Fore.YELLOW + "Enter genre number or name: ").strip() 
-            if x.isdigit() and 1 <= int(x) <= len(genres): 
-               return genres[int(x) - 1] 
-            x = x.title() 
-            if x in genres: 
-                return x 
-            print(Fore.RED + "Invalid input. Try again.\n")
-
+    while True:
+        x = input(Fore.YELLOW + "Enter genre number or name: ").strip() 
+        if x.isdigit() and 1 <= int(x) <= len(genres): 
+            return genres[int(x) - 1] 
+        x = x.title() 
+        if x in genres: 
+           return x 
+        print(Fore.RED + "Invalid input. Try again.\n")
 
 def get_rating():
     while True:
@@ -88,16 +87,17 @@ mp=TextBlob(mood).sentiment.polarity
 md="positive 😊" if mp>0 else "negative 😞" if mp<0 else "neutral 😐"
 print(f"\n{Fore.GREEN}Your mood is {md} (Polarity: {mp:.2f}).\n")
 rating=get_rating()
+genre=get_genre()
 print(Fore.GREEN + f"Finding movies for {name} with a rating of {rating} or higher... ",flush=True)
 dots()
-recs=recommend(mood=mood,rating=rating,n=5,genre=genres)    
+recs=recommend(mood=mood,rating=rating,n=5,genre=genre)    
 print(Fore.RED + recs + "\n") if isinstance(recs, str) else show(recs, name)
 while True:
     a = input(Fore.YELLOW + "\nWould you like more recommendations? (yes/no): ").strip().lower()
     if a == "no":
         print(Fore.GREEN + f"\nEnjoy your movie picks, {name}! 🎬🍿\n"); break
     if a == "yes":
-        recs = recommend(genre=genres, mood=mood, rating=rating, n=5)
+        recs = recommend(genre=genre, mood=mood, rating=rating, n=5)
         print(Fore.RED + recs + "\n") if isinstance(recs, str) else show(recs, name)
     else:
         print(Fore.RED + "Invalid choice. Try again.\n")
