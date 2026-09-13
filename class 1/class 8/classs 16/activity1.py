@@ -4,13 +4,13 @@ import numpy as np
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 import screen_brightness_control as sbc
 
-# Initialize MediaPipe
+
 Hands = mp.solutions.hands
 hands = Hands.Hands(min_detection_confidence=0.7, min_tracking_confidence=0.7)
 drawing = mp.solutions.drawing_utils
 TH, IX = Hands.HandLandmark.THUMB_TIP, Hands.HandLandmark.INDEX_FINGER_TIP
 
-# Initialize Audio Devices
+
 try:
     dev = AudioUtilities.GetDefaultOutputDevice() if hasattr(AudioUtilities, "GetDefaultOutputDevice") else AudioUtilities.GetSpeakers()
     volctl = dev.EndpointVolume.QueryInterface(IAudioEndpointVolume)
@@ -19,17 +19,17 @@ except Exception as e:
     print(f"Error initializing audio device: {e}")
     minv, maxv = -65.25, 0.0
 
-# Initialize Webcam
+
 cap = cv2.VideoCapture(0)
 if not cap.isOpened():
     print("Error: Could not open webcam.")
     exit()
 
-# CORRECTED ALIGNMENT: Window setup is outside the camera failure check
+
 WIN = "Hand Gesture Control"
 cv2.namedWindow(WIN, cv2.WINDOW_NORMAL)
 
-# CORRECTED ALIGNMENT: The main loop is out of the camera failure check
+
 while True:
     ok, img = cap.read()
     if not ok:
@@ -53,7 +53,7 @@ while True:
             dist = np.linalg.norm(np.array(tp) - np.array(ip))
 
             if label == "Left":
-                # Scale correctly for Windows audio level scalar (0.0 to 1.0)
+                
                 v = np.interp(dist, [30, 300], [0.0, 1.0])
                 try:
                     volctl.SetMasterVolumeLevelScalar(v, None)
@@ -79,10 +79,10 @@ while True:
                 cv2.rectangle(img, (w - 85, bar), (w - 50, 400), (255, 0, 0), cv2.FILLED)
                 cv2.putText(img, f"{pct}%", (w - 120, 430), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 3)
 
-    # CORRECTED ALIGNMENT: Show the window every single frame loop
+   
     cv2.imshow(WIN, img)
 
-    # CORRECTED ALIGNMENT: Event listening belongs inside the while loop
+  
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
@@ -92,6 +92,6 @@ while True:
     except cv2.error:
         break
 
-# Safely close down
+
 cap.release()
 cv2.destroyAllWindows()
